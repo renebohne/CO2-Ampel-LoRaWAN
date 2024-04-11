@@ -1,0 +1,47 @@
+/*
+; AT+CGDCONT=1,"IP","hub.telefonica.de"
+; AT+CGDCONT=2,"IPV4V6","hub.telefonica.de"
+; AT+CGDCONT? 
+; AT+CGACT=1,1
+; AT+CREG?
+; AT+CGPADDR
+*/
+#include <Arduino.h>
+#include <SPI.h>
+#include <SoftwareSerial.h>
+
+#define SIMPLE_NB_MODEM_SIM7080
+
+#define SIMPLE_NB_DEBUG SerialUSB
+#define BAUD_RATE 9600
+
+
+//rx,tx,invert
+SoftwareSerial SerialAT(BCM27, BCM22,false);
+
+
+
+void setup()
+{
+  SerialUSB.begin(BAUD_RATE);
+  delay(5000);
+
+  
+  SerialAT.begin(BAUD_RATE);
+  
+}
+
+void loop()
+{
+  while(SerialUSB.available())
+  {
+    SerialAT.write(SerialUSB.read());
+  }
+
+  while(SerialAT.available())
+  {
+    SerialUSB.write(SerialAT.read());
+  }
+
+}
+
